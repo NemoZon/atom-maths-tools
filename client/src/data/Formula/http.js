@@ -3,7 +3,7 @@ import axiosInstance from "../axios";
 
 const endpoint = '/formula';
 
-async function getFormulas(id, author, latexExpression, legend, operationNodeId) {
+async function get(id, author, latexExpression, legend, operationNodeId) {
     try {
         const filter = [];
         if (author) filter.push(`author=${author}`)
@@ -24,7 +24,7 @@ async function getFormulas(id, author, latexExpression, legend, operationNodeId)
     }
 }
 
-async function createFormula(nodeId, author, legend, latexExpression) {
+async function create(nodeId, author, legend, latexExpression) {
     try {
         if (typeof nodeId !== 'string') {
             throw new Error(`createFormula: nodeId must be a string. But it's ${nodeId}`)
@@ -41,4 +41,4 @@ async function createFormula(nodeId, author, legend, latexExpression) {
     }
 }
 
-export { getFormulas, createFormula }
+export { get, create }

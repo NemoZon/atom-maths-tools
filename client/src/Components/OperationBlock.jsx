@@ -15,6 +15,7 @@ export default function OperationBlock({ operation }) {
             padding: "10px",
             margin: "5px 0",
             backgroundColor: "#FFAD84",
+            color: 'black',
             borderRadius: 10,
             cursor: "grab",
         }}

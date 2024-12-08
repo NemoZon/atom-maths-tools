@@ -3,7 +3,7 @@ import axiosInstance from "../axios";
 
 const endpoint = '/node';
 
-async function getNodes(id, params, formulaId, operationId) {
+async function get(id, params, formulaId, operationId) {
     try {
         const filter = [];
         if (params) filter.push(`params=${params}`)
@@ -23,7 +23,7 @@ async function getNodes(id, params, formulaId, operationId) {
     }
 }
 
-async function createNode(params, formulaId, operationId) {
+async function create(params, formulaId, operationId) {
     try {
         if (!params.every((param) => typeof param === 'string')) {
             throw new Error(`createNode: params must be a list of strings. But it's ${params}`)
@@ -46,4 +46,4 @@ async function createNode(params, formulaId, operationId) {
     }
 }
 
-export { getNodes, createNode }
+export { get, create }
