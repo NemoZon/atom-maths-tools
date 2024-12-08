@@ -1,51 +1,52 @@
 const express = require("express");
 const HelloRouter = express.Router();
 
+const myRoutes = [
+  {
+    name: 'Operation',
+    endpoint: '/operation',
+    requests: [{
+      desc: 'Получить всё',
+      method: 'GET',
+      uri: '/',
+    }]
+  },
+  {
+    name: 'Node',
+    endpoint: '/node',
+    requests: [
+      {
+        desc: 'Получить всё',
+        method: 'GET',
+        uri: '/',
+      },
+      {
+        desc: 'Создать',
+        method: 'POST',
+        uri: '/',
+      }
+    ]
+  },
+  {
+    name: 'Formula',
+    endpoint: '/formula',
+    requests: [
+      {
+        desc: 'Получить всё',
+        method: 'GET',
+        uri: '/',
+      },
+      {
+        desc: 'Создать',
+        method: 'POST',
+        uri: '/',
+      }
+    ]
+  },
+]
+
 HelloRouter.get("/", async (req, res) => {
   try {
-    const myRoutes = [
-      {
-        name: 'Operation',
-        endpoint: '/operation',
-        requests: [{
-          desc: 'Получить всё',
-          method: 'GET',
-          uri: '/',
-        }]
-      },
-      {
-        name: 'Node',
-        endpoint: '/node',
-        requests: [
-          {
-            desc: 'Получить всё',
-            method: 'GET',
-            uri: '/',
-          },
-          {
-            desc: 'Создать',
-            method: 'POST',
-            uri: '/',
-          }
-        ]
-      },
-      {
-        name: 'Formula',
-        endpoint: '/formula',
-        requests: [
-          {
-            desc: 'Получить всё',
-            method: 'GET',
-            uri: '/',
-          },
-          {
-            desc: 'Создать',
-            method: 'POST',
-            uri: '/',
-          }
-        ]
-      },
-    ]
     const HTML = `
       <h1>Доступные эндпоинты: </h1>
       <ul>

@@ -3,10 +3,13 @@ const Node = require("../models/node.model");
 const { getOperations } = require("./operation.service");
 
 class NodeService {
-    static async getNodes({ formulaId, params, operationId }) {
+    static async getNodes({ id, formulaId, params, operationId }) {
         const filter = {};
         if (formulaId && mongoose.Types.ObjectId.isValid(formulaId)) {
             filter.formula = mongoose.Types.ObjectId(formulaId);
+        }
+        if (id && mongoose.Types.ObjectId.isValid(id)) {
+            filter._id = mongoose.Types.ObjectId(id);
         }
         if (params) {
             filter.params = { $all: params }; // все совпадения , не зависимо от порядка

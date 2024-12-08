@@ -4,11 +4,11 @@ const NodeRouter = express.Router();
 
 NodeRouter.get("/", async (req, res) => {
   try {
-    const { formulaId, params: paramsJson, operationId } = req.query;
+    const { id, formulaId, params: paramsJson, operationId } = req.query;
     const params = paramsJson ? JSON.parse(paramsJson) : undefined;
 
 
-    const nodes = await getNodes({formulaId, params, operationId});
+    const nodes = await getNodes({id, formulaId, params, operationId});
     
     res.status(200).json({ nodes: nodes });
   } catch (err) {
@@ -17,10 +17,8 @@ NodeRouter.get("/", async (req, res) => {
 });
 
 NodeRouter.post("/", async (req, res) => {
-    try {
-      const { formulaId, params, operationId} = req.body;
-      
-      const node = await createNode({ formulaId, params, operationId})
+    try {      
+      const node = await createNode(req.body)
 
       res.status(200).json({ node: node });
     } catch (err) {
