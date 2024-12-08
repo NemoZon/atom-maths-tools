@@ -1,5 +1,7 @@
+import {FormulaBuilder} from './Components/FormulaBuilder.jsx'
+
 function App() {
-  return (<h1>Hello world !</h1>)
+  return (<FormulaBuilder />)
 }
 
 export default App
