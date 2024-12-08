@@ -1,29 +1,33 @@
-## GET STARTED
+# Инструкция по проекту
 
-### For development
+## Для разработки (без запуска Docker)
 
-In */client* use the following command to run **React** app
-
-```bash
-npm run dev
-```
-
-You can access your app at [http://localhost:5173/](http://localhost:5173/)
-
-Next, run the command to execute your server **Express** in */server*
+В папке */client* используйте следующую команду для запуска клиентского **React** приложения
 
 ```bash
 npm run dev
 ```
 
-You can access your server at [http://localhost:5555/](http://localhost:5555/)
+Для визуализации клиента перейдите по ссылке [http://localhost:5173/](http://localhost:5173/)
 
-### For deployment
+Для запуска сереверного приложения **Express**, в папке */server* запустите команду
 
-In the root directory */* run
+```bash
+npm run dev
+```
+
+Для доступа к серверу перейдите по ссылке [http://localhost:5555/](http://localhost:5555/)
+
+## Для деплоймента
+
+В корневой папке проекта запустите следующую команду докера
 
 ```bash
 docker-compose up --build
 ```
 
-You can access your app at [http://localhost:5555/](http://localhost:5555/) and your server at [http://localhost:3000/](http://localhost:3000/)
+Сервер будет доступен [по этой ссылке http://localhost:5555/](http://localhost:5555/)
+
+Для доступа к веб интерфейсу [перейдите по ссылке http://localhost:3000/](http://localhost:3000/)
+
+Для управления и визуализации базы данных используеть [панель администратора mongo-express](http://localhost:8081/), используя логин **admin** и пароль **pass**, если нужно

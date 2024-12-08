@@ -13,6 +13,5 @@ COPY . .
 # Экспонируем порт
 EXPOSE 5555
 
-WORKDIR /app/src
-CMD ["node", "index.js"]
+CMD ["node", "src/index.js"]
 
