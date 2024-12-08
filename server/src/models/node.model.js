@@ -17,7 +17,7 @@ const NodeSchema = new mongoose.Schema({
       validate: {
         validator: function (arr) {
           return arr.every(
-            v => typeof v === 'string' || v instanceof mongoose.Document
+            v => typeof v === 'string' || v instanceof mongoose.Types.ObjectId
           );
         },
         message: 'Элемент массива должен быть строкой или объектом Operation!'

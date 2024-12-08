@@ -16,7 +16,7 @@ FormulaRouter.get("/", async (req, res) => {
 });
 
 FormulaRouter.post("/", async (req, res) => {
-    try {
+    try {      
       const formula = await createFormula(req.body)
       
       res.status(200).json({ formula: formula });

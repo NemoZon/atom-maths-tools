@@ -3,31 +3,31 @@ const Node = require("../models/node.model");
 const { getOperations } = require("./operation.service");
 
 class NodeService {
-    static async getNodes({ id, formulaId, params, operationId }) {
+    static async getNodes({id, formulaId, params, operationId} = {}) {
         const filter = {};
         if (formulaId && mongoose.Types.ObjectId.isValid(formulaId)) {
-            filter.formula = mongoose.Types.ObjectId(formulaId);
+            filter.formula = new mongoose.Types.ObjectId(formulaId);
         }
         if (id && mongoose.Types.ObjectId.isValid(id)) {
-            filter._id = mongoose.Types.ObjectId(id);
+            filter._id = new mongoose.Types.ObjectId(id);
         }
         if (params) {
             filter.params = { $all: params }; // все совпадения , не зависимо от порядка
         }
         if (operationId && mongoose.Types.ObjectId.isValid(operationId)) {
-            filter.operation = mongoose.Types.ObjectId(operationId)
+            filter.operation = new mongoose.Types.ObjectId(operationId)
         }
         return await Node.find(filter);
     }
-    static async createNode({ formulaId, params, operationId }) {
+    static async createNode({ formulaId, params, operationId } = {}) {
         if (!params || params.length === 0) {
             throw new Error('createNode: params не найден или пуст')
         }
         if (!operationId) {
             throw new Error('createNode: operationId не найден')
         }
-        const operation = await getOperations({ id: operationId })?.[0]
-
+        const operation = (await getOperations({ id: new mongoose.Types.ObjectId(operationId) }))?.[0]
+        
         if (!operation) {
             throw new Error(`createNode: operation с id ${operationId} не найден`)
         }
