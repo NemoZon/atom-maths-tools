@@ -3,7 +3,7 @@ import axiosInstance from "../axios";
 
 const endpoint = '/operation';
 
-async function getOperations(name, id) {
+async function get(name, id) {
     try {
         const filter = [];
         if (name) filter.push(`name=${name}`)
@@ -21,4 +21,4 @@ async function getOperations(name, id) {
     }
 }
 
-export { getOperations }
+export { get }
