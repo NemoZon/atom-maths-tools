@@ -5,23 +5,23 @@ import { Operation } from "../data/Operation/model";
 export default function OperationBlock({ operation }) {
     const [, drag] = useDrag(() => ({
         type: "BLOCK",
-        item: { code: operation.latexExpression },
+        item: operation,
     }));
     
     return (
-    <div
-        ref={drag}
-        style={{
-            padding: "10px",
-            margin: "5px 0",
-            backgroundColor: "#FFAD84",
-            color: 'black',
-            borderRadius: 10,
-            cursor: "grab",
-        }}
-    >
-        {operation.name}
-    </div>
+        <div
+            ref={drag}
+            style={{
+                padding: "10px",
+                margin: "5px 0",
+                backgroundColor: "#FFAD84",
+                color: 'black',
+                borderRadius: 10,
+                cursor: "grab",
+            }}
+        >
+            {operation.name}
+        </div>
     );
 }
 

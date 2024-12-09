@@ -1,15 +1,17 @@
 import { useDrop } from "react-dnd";
 import { Typography } from "antd";
 import PropTypes from "prop-types";
+import { Operation } from "../data/Operation/model";
 const { Text } = Typography;
 
-export default function EditArea({ formula, setFormula }) {
+export default function EditArea({ operation, setOperation }) {
     const [, drop] = useDrop(() => ({
         accept: "BLOCK",
-        drop: (item) => {
-            setFormula((prev) => (prev ? `${prev} ${item.code}` : item.code));
+        drop: (item) => {            
+            setOperation(item);
         },
     }));
+    
 
     return (
         <div
@@ -25,13 +27,13 @@ export default function EditArea({ formula, setFormula }) {
             }}
         >
             <Text type="secondary">
-            {formula || "Перетаскивайте блоки для построения формулы"}
+            {operation?.latexExpression || "Перетаскивайте блоки для построения формулы"}
             </Text>
         </div>
     );
 }
 
 EditArea.propTypes = {
-    formula: PropTypes.string,
-    setFormula: PropTypes.func.isRequired,
+    operation: PropTypes.instanceOf(Operation),
+    setOperation: PropTypes.func.isRequired,
 };

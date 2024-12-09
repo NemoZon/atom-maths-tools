@@ -3,7 +3,7 @@ import { Formula } from "../data/Formula/model";
 import { BlockMath } from 'react-katex';
 import { Card, Progress, Spin, Typography } from 'antd';
 import { useEffect, useState } from "react";
-import { useExpressionFromNode } from "../hooks/useExpressionFromNode";
+import useExpressionFromNode from "../hooks/useExpressionFromNode";
 
 const { Title, Text } = Typography;
 

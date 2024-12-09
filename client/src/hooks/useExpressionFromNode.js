@@ -2,15 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOperations } from "../data/Operation/actions";
 import { getNodes } from "../data/Node/actions";
+import { replaceParams } from "../tools";
 
-function replaceParams(operation, node) {  
-  return operation.latexExpression.replace(/\$\{(\w+)\}/g, (_, param) => {
-    const index = operation.params.indexOf(param);
-    return index !== -1 ? node.params[index] : `\\$\{${param}\\}`;
-  });
-};
-
-export function useExpressionFromNode(nodeId) {
+export default function useExpressionFromNode(nodeId) {
   const [isLoading, setIsLoading] = useState(false)
   const [expression, setExpression] = useState('');
   const { operations } = useSelector(state => state.operation)
