@@ -4,6 +4,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import OperationBlockList from "./OperationBlockList";
 import EditArea from "./EditArea";
+import FormulaList from "./FormulaList";
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
@@ -14,15 +15,15 @@ export const FormulaBuilder = () => {
   const [formula, setFormula] = useState("");
 
   return (
-    <DndProvider backend={HTML5Backend}>
-    <Layout style={{ minHeight: "100vh" }}>
+  <DndProvider backend={HTML5Backend}>
+    <Layout style={{ minHeight: "100vh", display: 'flex' }}>
       <OperationBlockList />
-      <Layout style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+      <Layout style={{ display: "flex", flexDirection: "column" }}>
         <Header style={{ backgroundColor: "#fff", padding: "10px 20px" }}>
           <Title level={3}>Конструктор формул</Title>
         </Header>
 
-        <Content style={{ flex: 1, padding: "20px", overflow: "auto" }}>
+        <Content style={{ padding: "20px", overflow: "auto", backgroundColor: "#fff"}}>
           <div>
             <Title level={4}>Основная формула</Title>
             <div
@@ -47,6 +48,11 @@ export const FormulaBuilder = () => {
               />
             </div>
           </div>
+        </Content>
+      </Layout>
+      <Layout style={{ height: '100vh', flex: "none", width: 450, overflow: 'auto' }}>
+        <Content>
+          <FormulaList />
         </Content>
       </Layout>
     </Layout>

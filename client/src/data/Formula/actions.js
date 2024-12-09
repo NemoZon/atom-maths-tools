@@ -9,8 +9,8 @@ async function getFormulas(dispatch, ...args) {
     } else {
         const payload = formulas.map(formula => ({
             id: formula.id,
-            author: formula.formula,
-            legend: formula.params,
+            author: formula.author,
+            legend: formula.legend,
             latexExpression: formula.latexExpression,
             operationNode: formula.operationNode,
         }));

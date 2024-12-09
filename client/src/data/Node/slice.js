@@ -14,7 +14,7 @@ export const nodeSlice = createSlice({
 			const payload = {}
 			for (let i = 0; i < action.payload.length; i++) {
 				const node = action.payload[i];
-				payload[node._id] = node;
+				payload[node.id] = node;
 			}
       
       state.nodes = payload;
