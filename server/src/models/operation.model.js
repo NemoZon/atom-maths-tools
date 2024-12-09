@@ -25,6 +25,12 @@ const OperationSchema = new mongoose.Schema({
         message: "Формула должна содержать параметры в формате '${}'",
       },
     },
+    // isParamsOrderImportant - позволяет определить, является ли порядок параметров важным или нет
+    // например для оператора "a = b", порядок не важен, так как "b = a" одно и тоже
+    isParamsOrderImportant: {
+      type: Boolean,
+      default: false,
+    }
 })
 
 const Operation = mongoose.model('Operation', OperationSchema);
