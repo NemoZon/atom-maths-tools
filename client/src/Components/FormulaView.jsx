@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { Formula } from "../data/Formula/model";
-import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 import { Card, Progress, Spin, Typography } from 'antd';
 import { useEffect, useState } from "react";
