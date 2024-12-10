@@ -3,34 +3,36 @@ import { Layout, Typography, Input, Button } from "antd";
 import EditArea from "./EditArea";
 import { BlockMath } from "react-katex";
 import { useEffect } from "react";
-import { Node } from "../data/Node/model";
 import { replaceParams } from "../tools";
 import { useLocation, useNavigate, useParams } from "react-router";
+import { useDispatch, useSelector } from 'react-redux'
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
 
 export default function BuilderContent() {
+  const dispatch = useDispatch(); 
   const [operation, setOperation] = useState();
-  const [node, setNode] = useState({});
-
+  const { myNodes } = useSelector(state => state.node)
   const { nodeId } = useParams(); // Получаем ID ноды из URL
   const navigate = useNavigate();
   const location = useLocation();
-
-  // params будет использоваться для инпутов
-  // [{ name: operation.params[0], value: '' }]
+  const [node, setNode] = useState({});
   const [params, setParams] = useState([]);
-
+  
   useEffect(() => {
-    if (operation) {
-      setNode(new Node({ params: operation.params, operation: operation.id }))
+    if (nodeId) {
+      const id = Number(nodeId)
+      const userNode = myNodes?.[id]
+      if (userNode) {
+        setNode(myNodes[id]);
+      } else {
+        navigate(-1) // нету ноды ? редирект назад
+      }
+    } else {
+      setNode(myNodes[0]);
     }
-  }, [operation])
-
-  useEffect(() => {
-    setNode(prev => ({...prev, params}))
-  }, [params])
+  }, [dispatch, myNodes, navigate, nodeId])
 
   return (
     <Layout style={{ display: "flex", flexDirection: "column" }}>
@@ -39,7 +41,7 @@ export default function BuilderContent() {
       </Header>
       <Content style={{ padding: "20px", overflow: "auto", backgroundColor: "#fff"}}>
         <div>
-          <Title level={4}>Основная формула {location.state}</Title>
+          <Title level={4}>{location.param ? `Формула для параметра ${location.param}` : 'Основная формула'}</Title>
           <div
             style={{
               border: "1px solid #d9d9d9",
@@ -48,14 +50,15 @@ export default function BuilderContent() {
               marginBottom: "20px",
             }}
           >
-            {operation && node ? 
+            {operation && node.params ? 
               <BlockMath math={replaceParams(operation, node)} /> : 
               <Text type="secondary">*формула в формате текста*</Text>
             }
           </div>
 
-          <EditArea operation={operation} setOperation={setOperation} params={params} setParams={setParams} />
+          <EditArea nodeId={nodeId} operation={operation} setOperation={setOperation} params={params} setParams={setParams} />
           
+          {/* TODO: добавить удаление ноды на кнопку */}
           {nodeId && <Button style={{ color: 'red' }} onClick={() => navigate(-1)}>
             Отменить
           </Button>}
@@ -63,7 +66,7 @@ export default function BuilderContent() {
           <div style={{ marginTop: "20px" }}>
             <Input.TextArea
               placeholder="Тут будет отображаться latex синтаксис данной формулы"
-              value={operation && node && replaceParams(operation, node)}
+              value={operation && node.params && replaceParams(operation, node)}
               readOnly
               rows={4}
             />

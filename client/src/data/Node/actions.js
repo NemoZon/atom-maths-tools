@@ -1,5 +1,6 @@
 import { create, get } from "./http";
-import { addNode, setError, setLoading, setNodes } from "./slice";
+import { addMyNode, addNode, deleteMyNodeByIndex, patchMyNodeByIndex, resetMyNodes, setError, setLoading, setNodes } from "./slice";
+import { Node } from "./model";
 
 async function getNodes(dispatch, ...args) {
     dispatch(setLoading(true))
@@ -35,4 +36,41 @@ async function createNode(dispatch, ...args) {
     dispatch(setLoading(false))
 }
 
-export { getNodes, createNode }
+function addUserNode(dispatch, userNode) {
+    const node = new Node(userNode);
+    const payload = {
+        id: node.id,
+        formula: node.formula,
+        params: node.params,
+        operation: node.operation,
+    }
+    dispatch(addMyNode(payload))
+    return payload;
+}
+
+function deleteUserNodeByIndex(dispatch, index) {
+    dispatch(deleteMyNodeByIndex(index))
+}
+
+function resetUserNodes(dispatch) {
+    dispatch(resetMyNodes())
+}
+
+function patchUserNodeByIndex(dispatch, index, userNode) {
+    const node = new Node(userNode)
+    const payload = {
+        index,
+        node: {
+            id: node.id,
+            formula: node.formula,
+            params: node.params,
+            operation: node.operation,
+        },
+    }
+    console.log('payload.node', payload.node);
+    
+    dispatch(patchMyNodeByIndex(payload))
+}
+
+
+export { getNodes, createNode, addUserNode, deleteUserNodeByIndex, resetUserNodes, patchUserNodeByIndex }

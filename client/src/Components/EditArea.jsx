@@ -6,30 +6,58 @@ import { useEffect } from "react";
 const { Text } = Typography;
 import { Input, Button } from 'antd';
 import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { addUserNode, patchUserNodeByIndex } from "../data/Node/actions";
 
-export default function EditArea({ operation, setOperation, params, setParams }) {
+export default function EditArea({ nodeId, operation, setOperation, params, setParams }) {
+    const navigate = useNavigate();
+    const { myNodes } = useSelector(state => state.node);
+
     const [, drop] = useDrop(() => ({
         accept: "BLOCK",
-        drop: (item) => {            
+        drop: (item) => {                     
             setOperation(item);
         },
     }));
-  const navigate = useNavigate();
 
+    console.log('EditArea nodeId', nodeId);
 
+    
+
+    const dispatch = useDispatch();
     useEffect(() => {
         if (operation) {
+            const id = Number(nodeId || 0)
             setParams(operation.params)
+            patchUserNodeByIndex(dispatch, id, { 
+                operation: operation.id,
+                params: operation.params,
+            })
         }
-    }, [operation, setParams])
+    }, [dispatch, nodeId, operation, setParams])
     
     function handleInputChange(value, paramIndex) {
+        const id = Number(nodeId || 0)
         setParams((prev) =>
             prev.map((param, index) =>
                 index === paramIndex ? value : param
             )
         );
-    }    
+        patchUserNodeByIndex(dispatch, id, { 
+            params: myNodes[id].params?.map((p, index) => index === paramIndex ? value : p) || []
+        })
+    }
+
+    function handleChangeMode(param, paramIndex) {        
+        const id = Number(nodeId || 0)
+        addUserNode(dispatch, { id: id + 1 })
+        patchUserNodeByIndex(dispatch, id, { 
+            params: myNodes[id].params?.map((p, index) => index === paramIndex ? myNodes.length : p) || [] // сетим myNodes.length, как id следующей ноды
+        })
+        setOperation()
+        setParams([])
+        navigate('/' + myNodes.length, { param }) // редиректим на страницу, param нужен для тайтла
+    }
 
     return (
         <div style={{
@@ -68,7 +96,7 @@ export default function EditArea({ operation, setOperation, params, setParams })
                                 gap: 5,
                                 alignItems: 'start',
                             }}>
-                                <Button onClick={() => {navigate("/" + index, { state: params[index] })}} type="text" size="small">
+                                <Button onClick={() => handleChangeMode(param, index)} type="text" size="small">
                                     <span style={{ color: '#2F72FF' }}>
                                         Изменить на операцию
                                     </span>
@@ -90,6 +118,7 @@ export default function EditArea({ operation, setOperation, params, setParams })
 }
 
 EditArea.propTypes = {
+    nodeId: PropTypes.string,
     operation: PropTypes.instanceOf(Operation),
     setOperation: PropTypes.func.isRequired,
     params: PropTypes.arrayOf(PropTypes.string).isRequired,

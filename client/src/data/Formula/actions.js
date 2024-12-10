@@ -1,5 +1,6 @@
 import { create, get } from "./http";
-import { addFormula, setError, setLoading, setFormulas } from "./slice";
+import { Formula } from "./model";
+import { addFormula, setError, setLoading, setFormulas, setMyFormula } from "./slice";
 
 async function getFormulas(dispatch, ...args) {
     dispatch(setLoading(true))
@@ -37,4 +38,16 @@ async function createFormula(dispatch, ...args) {
     dispatch(setLoading(false))
 }
 
-export { getFormulas, createFormula }
+async function setUserFormula(dispatch, ...args) {
+    const formula = new Formula({ ...args })
+    const payload = {
+        id: formula.id,
+        author: formula.author,
+        legend: formula.legend,
+        latexExpression: formula.latexExpression,
+        operationNode: formula.operationNode,
+    }
+    dispatch(setMyFormula(payload))
+}
+
+export { getFormulas, createFormula, setUserFormula }
