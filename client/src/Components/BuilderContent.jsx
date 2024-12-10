@@ -3,9 +3,11 @@ import { Layout, Typography, Input, Button } from "antd";
 import EditArea from "./EditArea";
 import { BlockMath } from "react-katex";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Node } from "../data/Node/model";
 import { replaceParams } from "../tools";
 import { useLocation, useNavigate, useParams } from "react-router";
+import { analyzeFormula } from "../data/Formula/actions";
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
@@ -13,6 +15,7 @@ const { Title, Text } = Typography;
 export default function BuilderContent() {
   const [operation, setOperation] = useState();
   const [node, setNode] = useState({});
+  const dispatch = useDispatch();
 
   const { nodeId } = useParams(); // Получаем ID ноды из URL
   const navigate = useNavigate();
@@ -56,7 +59,7 @@ export default function BuilderContent() {
 
           <EditArea operation={operation} setOperation={setOperation} params={params} setParams={setParams} />
           
-          {nodeId && <Button style={{ color: 'red' }} onClick={() => navigate(-1)}>
+          {nodeId && <Button style={{ color: 'red', marginTop: '8px' }} onClick={() => navigate(-1)}>
             Отменить
           </Button>}
 
@@ -69,6 +72,9 @@ export default function BuilderContent() {
             />
           </div>
         </div>
+        <Button style={{ color: 'blue', marginTop: '8px' }} onClick={() => {analyzeFormula(dispatch)}}>
+          Найти совпадения
+        </Button>
       </Content>
   </Layout>
   )

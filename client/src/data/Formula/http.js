@@ -41,4 +41,18 @@ async function create(nodeId, author, legend, latexExpression) {
     }
 }
 
-export { get, create }
+async function analyze() {
+    try {
+        const response = await axiosInstance.post(`${endpoint}/analyze/`, { /** отправить аргументы */ })
+        if (response.status === 200) {
+            return { /** вернуть ответ */ }
+        } else {
+            return { /** вернуть ошибку */ }
+        }
+    } catch (error) {
+        console.error(error);
+        return { error }
+    }
+}
+
+export { get, create, analyze }
