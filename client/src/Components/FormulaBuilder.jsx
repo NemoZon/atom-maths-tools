@@ -17,14 +17,22 @@ const { Title, Text } = Typography;
 // Основной компонент приложения
 export const FormulaBuilder = () => {
   const [operation, setOperation] = useState();
-  const [node, setNode] = useState();
+  const [node, setNode] = useState({});
+
+  // params будет использоваться для инпутов
+  // [{ name: operation.params[0], value: '' }]
+  const [params, setParams] = useState([]);
 
   useEffect(() => {
-    // добавить: params будет использоваться для инпутов
-    if (operation) 
+    if (operation) {
       setNode(new Node({ params: operation.params, operation: operation.id }))
+    }
   }, [operation])
-  
+
+  useEffect(() => {
+    setNode(prev => ({...prev, params}))
+  }, [params])
+
   return (
     <DndProvider backend={HTML5Backend}>
       <Layout style={{ minHeight: "100vh", display: 'flex' }}>
@@ -48,7 +56,7 @@ export const FormulaBuilder = () => {
                 {operation && node ? <BlockMath math={replaceParams(operation, node)} /> : <Text type="secondary">*формула в формате текста*</Text>}
               </div>
 
-              <EditArea operation={operation} setOperation={setOperation} />
+              <EditArea operation={operation} setOperation={setOperation} params={params} setParams={setParams} />
 
               <div style={{ marginTop: "20px" }}>
                 <Input.TextArea

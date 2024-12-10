@@ -2,10 +2,11 @@ import { useDrop } from "react-dnd";
 import { Typography } from "antd";
 import PropTypes from "prop-types";
 import { Operation } from "../data/Operation/model";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 const { Text } = Typography;
+import { Input } from 'antd';
 
-export default function EditArea({ operation, setOperation }) {
+export default function EditArea({ operation, setOperation, params, setParams }) {
     const [, drop] = useDrop(() => ({
         accept: "BLOCK",
         drop: (item) => {            
@@ -13,20 +14,16 @@ export default function EditArea({ operation, setOperation }) {
         },
     }));
 
-    // [{ name: operation.params[0], value: '' }]
-    const [params, setParams] = useState();
-
     useEffect(() => {
         if (operation) {
-            const paramsValue = operation.params.map((param) => ({ name: param, value: '' }))
-            setParams(paramsValue)
+            setParams(operation.params)
         }
-    }, [operation])
+    }, [operation, setParams])
     
-    function handleInputChange(value, paramName) {
+    function handleInputChange(value, paramIndex) {
         setParams((prev) =>
-            prev.map((param) =>
-                param.name === paramName ? { ...param, value: value } : param // Обновляем только нужный объект
+            prev.map((param, index) =>
+                index === paramIndex ? value : param
             )
         );
     }    
@@ -61,14 +58,18 @@ export default function EditArea({ operation, setOperation }) {
                         gap: 20,
                         flexWrap: "wrap",
                     }}>
-                        {params.map((param) => (
-                            <label key={param.name} style={{
+                        {params.map((param, index) => (
+                            <label key={index} style={{
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'start',
                             }} >
-                                <Text>Имя параметра: {param.name}</Text>
-                                <input type="text" value={param.value} onChange={(e) => handleInputChange(e.target.value, param.name)} />
+                                <Input
+                                    prefix={<Text type="secondary"><i>{operation.params[index]}:</i></Text>}
+                                    type="text" 
+                                    value={param} 
+                                    onChange={(e) => handleInputChange(e.target.value, index)} 
+                                />
                             </label>
                         ))}
                     </div>
@@ -82,4 +83,6 @@ export default function EditArea({ operation, setOperation }) {
 EditArea.propTypes = {
     operation: PropTypes.instanceOf(Operation),
     setOperation: PropTypes.func.isRequired,
+    params: PropTypes.arrayOf(PropTypes.string).isRequired,
+    setParams: PropTypes.func,
 };
