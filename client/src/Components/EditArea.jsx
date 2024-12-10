@@ -5,6 +5,7 @@ import { Operation } from "../data/Operation/model";
 import { useEffect } from "react";
 const { Text } = Typography;
 import { Input, Button } from 'antd';
+import { useNavigate } from "react-router";
 
 export default function EditArea({ operation, setOperation, params, setParams }) {
     const [, drop] = useDrop(() => ({
@@ -13,6 +14,8 @@ export default function EditArea({ operation, setOperation, params, setParams })
             setOperation(item);
         },
     }));
+  const navigate = useNavigate();
+
 
     useEffect(() => {
         if (operation) {
@@ -65,7 +68,7 @@ export default function EditArea({ operation, setOperation, params, setParams })
                                 gap: 5,
                                 alignItems: 'start',
                             }}>
-                                <Button onClick={() => {console.log("clcik")}} type="text" size="small">
+                                <Button onClick={() => {navigate("/" + index, { state: params[index] })}} type="text" size="small">
                                     <span style={{ color: '#2F72FF' }}>
                                         Изменить на операцию
                                     </span>
