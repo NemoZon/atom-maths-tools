@@ -5,6 +5,7 @@ import { BlockMath } from "react-katex";
 import { useEffect } from "react";
 import { replaceParams } from "../tools";
 import { useLocation, useNavigate, useParams } from "react-router";
+import { analyzeFormula } from "../data/Formula/actions";
 import { useDispatch, useSelector } from 'react-redux'
 
 const { Header, Content } = Layout;
@@ -13,7 +14,8 @@ const { Title, Text } = Typography;
 export default function BuilderContent() {
   const dispatch = useDispatch(); 
   const [operation, setOperation] = useState();
-  const { myNodes } = useSelector(state => state.node)
+  const { myNodes } = useSelector(state => state.node)  
+
   const { nodeId } = useParams(); // Получаем ID ноды из URL
   const navigate = useNavigate();
   const location = useLocation();
@@ -59,7 +61,7 @@ export default function BuilderContent() {
           <EditArea nodeId={nodeId} operation={operation} setOperation={setOperation} params={params} setParams={setParams} />
           
           {/* TODO: добавить удаление ноды на кнопку */}
-          {nodeId && <Button style={{ color: 'red' }} onClick={() => navigate(-1)}>
+          {nodeId && <Button style={{ color: 'red', marginTop: '8px' }} onClick={() => navigate(-1)}>
             Отменить
           </Button>}
 
@@ -72,6 +74,9 @@ export default function BuilderContent() {
             />
           </div>
         </div>
+        <Button style={{ color: 'blue', marginTop: '8px' }} onClick={() => {analyzeFormula(dispatch)}}>
+          Найти совпадения
+        </Button>
       </Content>
   </Layout>
   )

@@ -1,4 +1,4 @@
-import { create, get } from "./http";
+import { create, get, analyze } from "./http";
 import { Formula } from "./model";
 import { addFormula, setError, setLoading, setFormulas, setMyFormula } from "./slice";
 
@@ -50,4 +50,23 @@ async function setUserFormula(dispatch, ...args) {
     dispatch(setMyFormula(payload))
 }
 
-export { getFormulas, createFormula, setUserFormula }
+async function analyzeFormula(dispatch, ...args) {
+    dispatch(setLoading(true))
+    const { formula, error } = await analyze(...args);
+    if (error) {
+        dispatch(setError(error))
+    } else {
+        /** TODO: изменить */
+        const payload = {
+            id: formula.id,
+            author: formula.author,
+            legend: formula.legend,
+            latexExpression: formula.latexExpression,
+            operationNode: formula.operationNode,
+        };
+        dispatch(addFormula(payload))
+    }
+    dispatch(setLoading(false))
+}
+
+export { getFormulas, createFormula, analyzeFormula, setUserFormula }
