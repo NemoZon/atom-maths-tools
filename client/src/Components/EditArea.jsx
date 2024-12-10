@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Operation } from "../data/Operation/model";
 import { useEffect } from "react";
 const { Text } = Typography;
-import { Input } from 'antd';
+import { Input, Button } from 'antd';
 
 export default function EditArea({ operation, setOperation, params, setParams }) {
     const [, drop] = useDrop(() => ({
@@ -59,18 +59,24 @@ export default function EditArea({ operation, setOperation, params, setParams })
                         flexWrap: "wrap",
                     }}>
                         {params.map((param, index) => (
-                            <label key={index} style={{
+                            <div  key={index}  style={{
                                 display: 'flex',
                                 flexDirection: 'column',
+                                gap: 5,
                                 alignItems: 'start',
-                            }} >
+                            }}>
+                                <Button onClick={() => {console.log("clcik")}} type="text" size="small">
+                                    <span style={{ color: '#2F72FF' }}>
+                                        Изменить на операцию
+                                    </span>
+                                </Button>  
                                 <Input
                                     prefix={<Text type="secondary"><i>{operation.params[index]}:</i></Text>}
                                     type="text" 
                                     value={param} 
                                     onChange={(e) => handleInputChange(e.target.value, index)} 
                                 />
-                            </label>
+                            </div>
                         ))}
                     </div>
                 )}
