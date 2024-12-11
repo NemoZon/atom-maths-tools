@@ -28,9 +28,6 @@ export default function useExpressionFromNode(nodeId) {
     const node = nodes[nodeId];
     if (!node) return '';
   
-    const operation = operations.find(op => op.id === node.operation);
-    if (!operation) return '';
-  
     // Заменяем параметры, рекурсивно обрабатывая дочерние узлы
     const resolvedParams = node.params.map(param => {
       return nodes[param] ? getExpressionFromNode(param) : param;
@@ -40,7 +37,7 @@ export default function useExpressionFromNode(nodeId) {
     const resolvedNode = { ...node, params: resolvedParams };
   
     
-    return replaceParams(operation, resolvedNode);
+    return replaceParams(operations, resolvedNode);
   }, [nodes, operations])
   
 

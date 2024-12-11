@@ -1,11 +1,12 @@
 import {FormulaBuilder} from './Components/FormulaBuilder.jsx'
-import { Routes, Route } from "react-router";
+import { Routes, Route, Navigate } from "react-router";
 
 function App() {
   
   return (
     <Routes>
-      <Route path="/:nodeId?" element={<FormulaBuilder />} />
+      <Route path="/" element={<Navigate to="/0" replace />} />
+      <Route path="/:nodeId" element={<FormulaBuilder />} />
     </Routes>
   )
 }

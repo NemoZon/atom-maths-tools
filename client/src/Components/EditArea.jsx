@@ -20,21 +20,19 @@ export default function EditArea({ nodeId, operation, setOperation, params, setP
         },
     }));
 
-    console.log('EditArea nodeId', nodeId);
-
-    
-
     const dispatch = useDispatch();
+
     useEffect(() => {
-        if (operation) {
-            const id = Number(nodeId || 0)
+        const id = Number(nodeId || 0)
+
+        if (operation && !myNodes[id].operation) {
             setParams(operation.params)
             patchUserNodeByIndex(dispatch, id, { 
                 operation: operation.id,
                 params: operation.params,
             })
         }
-    }, [dispatch, nodeId, operation, setParams])
+    }, [dispatch, myNodes, nodeId, operation, setParams])
     
     function handleInputChange(value, paramIndex) {
         const id = Number(nodeId || 0)
@@ -50,13 +48,13 @@ export default function EditArea({ nodeId, operation, setOperation, params, setP
 
     function handleChangeMode(param, paramIndex) {        
         const id = Number(nodeId || 0)
-        addUserNode(dispatch, { id: id + 1 })
+        addUserNode(dispatch, { id: myNodes.length })
         patchUserNodeByIndex(dispatch, id, { 
             params: myNodes[id].params?.map((p, index) => index === paramIndex ? myNodes.length : p) || [] // сетим myNodes.length, как id следующей ноды
         })
         setOperation()
         setParams([])
-        navigate('/' + myNodes.length, { param }) // редиректим на страницу, param нужен для тайтла
+        navigate('/' + myNodes.length, { state: param }) // редиректим на страницу, param нужен для тайтла
     }
 
     return (
