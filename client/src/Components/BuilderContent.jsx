@@ -7,6 +7,9 @@ import { replaceParams } from "../tools";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { analyzeFormula } from "../data/Formula/actions";
 import { useDispatch, useSelector } from 'react-redux'
+import { deleteMyNodeByIndex } from "../data/Node/slice";
+import { patchUserNodeByIndex } from "../data/Node/actions";
+import { Operation } from "../data/Operation/model";
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
@@ -30,7 +33,6 @@ export default function BuilderContent() {
       const userNode = myNodes?.[id]
       if (userNode) {
         const paramsTree = myNodes[id].params ? myNodes[id].params.map((param) => typeof param === 'number' ? myNodes[param] : param) : [];
-        console.log('{...myNodes[id], params: paramsTree}', {...myNodes[id], params: paramsTree});
         
         setNode({...myNodes[id], params: paramsTree});
       } else {
@@ -41,9 +43,44 @@ export default function BuilderContent() {
     }
   }, [dispatch, myNodes, navigate, nodeId])
 
-  // function save() {
+  useEffect(() => {
+    const id = Number(nodeId)
+    if (operations.length > 0) {
+      const myNodeOperation = operations.find(op => myNodes[id].operation === op.id)
+      if (myNodeOperation) {
+        setOperation(new Operation(myNodeOperation))
+        setParams(node.params.map((param) => typeof param === 'object' ? param.operation && param.params ? replaceParams(operations, param) : '' : param));
+      } else {
+        setOperation()
+      }
+    }
+  }, [myNodes, node.params, nodeId, operations])  
 
-  // }
+  function cancel() {
+    const id = Number(nodeId)
+    for (let i = 0; i < myNodes.length; i++) {
+      const nodeIndexWithDependency = myNodes.findIndex((node) => node.params && node.params.some((param) => param === id))
+      if (nodeIndexWithDependency >= 0) {
+        patchUserNodeByIndex(
+          dispatch,
+          nodeIndexWithDependency,
+          { 
+            params: myNodes[nodeIndexWithDependency].params.map((param) => param === id ? 'x' : param)
+          }
+        )
+      }
+    }
+    deleteMyNodeByIndex(id);
+    navigate(-1);
+  }
+
+  function save() {
+    if (!operation) {
+      cancel();
+    } else {
+      navigate(-1);
+    }
+  }
 
   const expression = useMemo(() => {
     if (operations.length > 0 && node.params && node.operation) {
@@ -77,12 +114,11 @@ export default function BuilderContent() {
           <EditArea nodeId={nodeId} operation={operation} setOperation={setOperation} params={params} setParams={setParams} />
           
           <div>
-            {/* TODO: добавить удаление ноды на кнопку */}
-            {nodeId !== '0' && <Button style={{ color: 'red', marginTop: '8px' }} onClick={() => navigate(-1)}>
+            {nodeId !== '0' && <Button style={{ color: 'red', marginTop: '8px' }} onClick={cancel}>
               Отменить
             </Button>}
 
-            {nodeId !== '0' && <Button style={{ color: 'green', marginTop: '8px' }} onClick={() => navigate(-1)}>
+            {nodeId !== '0' && <Button style={{ color: 'green', marginTop: '8px' }} onClick={save}>
               Сохранить
             </Button>}
           </div>
