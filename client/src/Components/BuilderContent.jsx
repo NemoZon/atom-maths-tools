@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Layout, Typography, Input, Button } from "antd";
 import EditArea from "./EditArea";
+import LegendModal from "./LegendModal";
 import { BlockMath } from "react-katex";
 import { useEffect } from "react";
 import { replaceParams } from "../tools";
@@ -26,6 +27,7 @@ export default function BuilderContent() {
   
   const [node, setNode] = useState({});
   const [params, setParams] = useState([]);
+  const [isLegendModalVisible, setIsLegendModalVisible] = useState(false);
   
   useEffect(() => {
     if (nodeId) {
@@ -94,6 +96,7 @@ export default function BuilderContent() {
       <Header style={{ backgroundColor: "#fff", padding: "10px 20px" }}>
         <Title level={3}>Конструктор формул</Title>
       </Header>
+      <LegendModal visible={isLegendModalVisible} onClose={() => setIsLegendModalVisible(false)} onSave={() => {}} legendResult={<BlockMath math={expression} />} />
       <Content style={{ padding: "20px", overflow: "auto", backgroundColor: "#fff"}}>
         <div>
           <Title level={4}>{location.state ? `Формула для параметра ${location.state}` : 'Основная формула'}</Title>
@@ -135,6 +138,9 @@ export default function BuilderContent() {
         </div>
         <Button style={{ color: 'blue', marginTop: '8px' }} onClick={() => {analyzeFormula(dispatch)}}>
           Найти совпадения
+        </Button>
+        <Button style={{ color: 'green', margin: '8px 0 0 5px' }} onClick={() => setIsLegendModalVisible(true)}>
+          Сохранить формулу
         </Button>
       </Content>
   </Layout>
