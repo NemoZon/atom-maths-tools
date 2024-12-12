@@ -4,12 +4,12 @@ import { Modal, Input, Button } from 'antd';
 const LegendModal = ({ visible, onClose, onSave, legendResult }) => {
   return (
     <Modal
-      visible={visible}
+      open={visible}
       onCancel={onClose}
       footer={null}
       title="Добавить легенду"
       centered
-      bodyStyle={{ backgroundColor: '#e2e2e2', padding: 5, borderRadius: 4 }}
+      styles={{ backgroundColor: '#e2e2e2', padding: 5, borderRadius: 4 }}
     >
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 14, marginBottom: 4 }}>Формула</div>
