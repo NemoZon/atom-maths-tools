@@ -139,9 +139,9 @@ export default function BuilderContent() {
         <Button style={{ color: 'blue', marginTop: '8px' }} onClick={() => {analyzeFormula(dispatch)}}>
           Найти совпадения
         </Button>
-        <Button style={{ color: 'green', margin: '8px 0 0 5px' }} onClick={() => setIsLegendModalVisible(true)}>
+        {Boolean(expression.length) && <Button style={{ color: 'green', margin: '8px 0 0 5px' }} onClick={() => setIsLegendModalVisible(true)}>
           Сохранить формулу
-        </Button>
+        </Button>}
       </Content>
   </Layout>
   )
