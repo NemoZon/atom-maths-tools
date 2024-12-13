@@ -9,6 +9,7 @@ const connectToDb = require('./data/connectToDb');
 const initializeDatabase = require('./data/initializeDatabase');
 const NodeRouter = require('./routes/node.route');
 const FormulaRouter = require('./routes/formula.route');
+const FormulaService = require('./services/formula.service');
 
 const PORT = 5555;
 

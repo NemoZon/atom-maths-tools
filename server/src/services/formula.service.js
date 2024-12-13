@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Formula = require("../models/formula.model");
 const Node = require("../models/node.model");
+const AnalyzeService = require("./analyze.service");
 
 
 class FormulaService {
@@ -50,42 +51,72 @@ class FormulaService {
 
         return formula;
     }
-    static async analyzeFormula({ formulaId } = {}) {    
-      const formula = await Formula.findById(formulaId)
-      const formulas = (await Formula.find({})).filter((f) => f._id !== formula._id)
 
-      if (!formula) {
-        throw new Error(`analyzeFormula: formula с id ${formulaId} не найдена`)
-      }
-
-      let maxNote = 0;
-      const formulaOperations = []
-      const nodesToFetch = [formula.operationNode]
-      while (nodesToFetch.length > 0) {
-        const lastNodeID = nodesToFetch.pop();
-        const lastNode = await Node.findById(lastNodeID)
-        const operationToPush = {
-          operation: lastNode.operation.toString(),
-          params: lastNode.params.filter(mongoose.Types.ObjectId.isValid)
-        }
-        // добавляем очки только за операции вложенные в другие операции
-        maxNote += 1 + operationToPush.params.length;
-        formulaOperations.push(operationToPush);
-
-        for (let i = 0; i < lastNode.params.length; i++) {
-          const nodeParam = lastNode.params[i];
-          const isObjectId = mongoose.Types.ObjectId.isValid(nodeParam)
-          if (isObjectId) {
-            nodesToFetch.push(nodeParam);
+    static async __getFormulaNodesOrder(formula) {
+      const firstNode = formula.operationNode;
+      const result = new Map([[firstNode.id.toString(), firstNode]]);
+      const nodesToParse = [firstNode];
+    
+      while (nodesToParse.length > 0) {
+        const currentNode = nodesToParse.shift();
+    
+        const objectIds = currentNode.params.filter(p => mongoose.Types.ObjectId.isValid(p));
+        if (objectIds.length > 0) {
+          const foundNodes = await Node.find({ _id: { $in: objectIds } });
+          for (const node of foundNodes) {
+            if (!result.has(node.id.toString())) {
+              result.set(node.id.toString(), node);
+              nodesToParse.push(node);
+            }
           }
         }
       }
+    
+      return Array.from(result.values());
+    }
 
-      const formulasToFetch = [...formulas]
-      while (formulasToFetch.length > 0) {
-
+    // функция принимает formula = { operationNode: 1 }, и nodes = [{ id: 1, operation: "operation id", params: ["a", 2]  }, { id: 2 ...}]
+    static __getCustomFormulaNodesOrder(formula, nodes) {
+      if (!formula) {
+        throw new Error(`getCustomFormulaNodesOrder: формула не найдена`);
       }
-  }
+    
+      const firstNode = nodes.find(node => node.id === formula.operationNode);
+      const result = new Map([[firstNode.id, firstNode]]);
+      const nodesToParse = [firstNode];
+    
+      while (nodesToParse.length > 0) {
+        const currentNode = nodesToParse.shift();
+    
+        const numberIds = currentNode.params.filter(p => typeof p === 'number');
+        if (numberIds.length > 0) {
+          const foundNodes = numberIds.map((id) => nodes.find((n) => n.id === id));
+          for (const node of foundNodes) {
+            if (!result.has(node.id)) {
+              result.set(node.id, node);
+              nodesToParse.push(node);
+            }
+          }
+        }
+      }
+    
+      return Array.from(result.values());
+    }
+
+    static async analyzeFormula(formula, nodes) {
+      const firstFormulaNodes = FormulaService.__getCustomFormulaNodesOrder(formula, nodes);
+      const formulas = await Formula.find().populate('operationNode')
+      const results = []
+      for (let i = 0; i < formulas.length; i++) {
+        const formula = formulas[i]        
+        const secondFomulaNodes = await FormulaService.__getFormulaNodesOrder(formula);
+        
+        const match = AnalyzeService.analyzeFormulasNodes(firstFormulaNodes, secondFomulaNodes)
+        const result = {...match, matchWithFormula: formula._id }
+        results.push(result)
+      }
+      return results
+    }
 }
 
 module.exports = FormulaService;

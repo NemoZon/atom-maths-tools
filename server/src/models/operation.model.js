@@ -29,7 +29,7 @@ const OperationSchema = new mongoose.Schema({
     // например для оператора "a = b", порядок не важен, так как "b = a" одно и тоже
     isParamsOrderImportant: {
       type: Boolean,
-      default: false,
+      default: true,
     }
 })
 

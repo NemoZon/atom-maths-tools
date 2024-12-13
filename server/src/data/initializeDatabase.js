@@ -40,17 +40,20 @@ async function addDefaultOperations() {
           {
             "name": "Равенство выражений a и b",
             "params": ["a", "b"],
-            "latexExpression": "${a} = ${b}"
+            "latexExpression": "${a} = ${b}",
+            isParamsOrderImportant: false,
           },
           {
             "name": "Умножение a на b",
             "params": ["a", "b"],
-            "latexExpression": "${a} \\times ${b}"
+            "latexExpression": "${a} \\times ${b}",
+            isParamsOrderImportant: false,
           },
           {
             "name": "Сумма a и b",
             "params": ["a", "b"],
-            "latexExpression": "${a} + ${b}"
+            "latexExpression": "${a} + ${b}",
+            isParamsOrderImportant: false,
           },
           {
             "name": "Вычитание b из a",
