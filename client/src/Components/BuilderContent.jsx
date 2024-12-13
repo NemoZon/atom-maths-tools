@@ -197,7 +197,7 @@ export default function BuilderContent() {
         <Button
           style={{ color: "blue", marginTop: "8px" }}
           onClick={() => {
-            analyzeFormula(dispatch, {nodes: myNodes, formula: {operationNode: myNodes[0]}});
+            analyzeFormula(dispatch, {nodes: myNodes, formula: {operationNode: myNodes[0].id}});
           }}
         >
           Найти совпадения
