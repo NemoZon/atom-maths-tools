@@ -142,7 +142,7 @@ async function addDefaultNodes(operations) {
           operation: operationIds[Math.floor(Math.random() * operationIds.length)],
         },
         {
-          params: [nodeLeaves[2]._id, nodeLeaves[3]]._id,
+          params: [nodeLeaves[2]._id, nodeLeaves[3]._id],
           operation: operationIds[Math.floor(Math.random() * operationIds.length)],
         },
         {
@@ -245,6 +245,10 @@ async function addDefaultFormulas(nodes) {
 
 // Проверка и добавление данных
 async function initializeDatabase() {
+    // await Formula.deleteMany(); 
+    // await Node.deleteMany(); 
+    // await Operation.deleteMany(); 
+
     const operations = await addDefaultOperations();
     const nodes = await addDefaultNodes(operations);
     await addDefaultFormulas(nodes);
