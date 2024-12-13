@@ -132,7 +132,7 @@ export default function EditArea({
                         fontSize: 14,
                       }}
                     >
-                      x
+                      {operation.params[index]}
                     </span>
                     <Link
                       to={`/${myNodes[Number(nodeId)].params[index]}`}
