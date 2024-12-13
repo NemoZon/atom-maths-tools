@@ -67,7 +67,7 @@ export default function EditArea({
     });
     setOperation();
     setParams([]);
-    navigate("/" + myNodes.length, { state: param }); // редиректим на страницу, param нужен для тайтла
+    navigate("/" + myNodes.length, { state: operation.params[paramIndex] }); // редиректим на страницу, param нужен для тайтла
   }
 
   return (
