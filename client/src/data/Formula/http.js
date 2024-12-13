@@ -41,11 +41,11 @@ async function create(nodeId, author, legend, latexExpression) {
     }
 }
 
-async function analyze() {
+async function analyze({nodes, formula}) {
     try {
-        const response = await axiosInstance.post(`${endpoint}/analyze/`, { /** отправить аргументы */ })
+        const response = await axiosInstance.post(`${endpoint}/analyze/`, { nodes, formula })
         if (response.status === 200) {
-            return { /** вернуть ответ */ }
+            return response.data; 
         } else {
             return { /** вернуть ошибку */ }
         }
