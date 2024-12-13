@@ -72,11 +72,6 @@ export default function BuilderContent() {
     }
   }, [myNodes, node.params, nodeId, operations]);
 
-  useEffect(() => {
-    console.log("Current operation:", operation);
-    console.log("Node params:", node.params);
-  }, [operation, node.params]);
-
   function cancel() {
     const id = Number(nodeId);
     for (let i = 0; i < myNodes.length; i++) {
@@ -118,19 +113,6 @@ export default function BuilderContent() {
     return "";
   }, [operations, node]);
 
-  console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
-  console.log("Node:", node);
-  console.log("Params:", params);
-  console.log("Operations:", operations);
-  console.log("MyNodes:", myNodes);
-  console.log("Node ID:", nodeId);
-  console.log("Node Params:", node.params);
-  console.log("MyOper", myNodes[nodeId]);
-  console.log("Expression", expression);
-  console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
-
-  console.log("Generated expression:", expression);
-
   return (
     <Layout style={{ display: "flex", flexDirection: "column" }}>
       <Header style={{ backgroundColor: "#fff", padding: "10px 20px" }}>
@@ -151,7 +133,6 @@ export default function BuilderContent() {
               ? `Формула для параметра ${location.state}`
               : "Основная формула"}
           </Title>
-          {console.log(location.state, "this is location.state")}
           <div
             style={{
               border: "1px solid #d9d9d9",

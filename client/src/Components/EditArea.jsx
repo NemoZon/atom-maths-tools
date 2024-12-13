@@ -41,8 +41,6 @@ export default function EditArea({
       });
     }
   }, [dispatch, isDropped, myNodes, nodeId, operation, setParams]);
-  console.log(nodeId, 'NODE ID')
-  console.log(operation, 'OPERATION')
 
   function handleInputChange(value, paramIndex) {
     const id = Number(nodeId || 0);
