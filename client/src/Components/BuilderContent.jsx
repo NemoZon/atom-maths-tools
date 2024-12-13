@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Layout, Typography, Input, Button, Spin } from "antd";
 import EditArea from "./EditArea";
 import LegendModal from "./LegendModal";
@@ -8,8 +8,7 @@ import { replaceParams } from "../tools";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { analyzeFormula } from "../data/Formula/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteMyNodeByIndex } from "../data/Node/slice";
-import { patchUserNodeByIndex } from "../data/Node/actions";
+import { deleteUserNodeByIndex, patchUserNodeByIndex } from "../data/Node/actions";
 import { Operation } from "../data/Operation/model";
 import useExpressionFromNode from "../hooks/useExpressionFromNode";
 
@@ -87,7 +86,7 @@ export default function BuilderContent() {
         });
       }
     }
-    deleteMyNodeByIndex(id);
+    deleteUserNodeByIndex(dispatch, id);
     navigate(-1);
   }
 

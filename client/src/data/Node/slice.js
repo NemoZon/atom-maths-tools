@@ -48,7 +48,7 @@ export const nodeSlice = createSlice({
     },
     deleteMyNodeByIndex: (state, action) => {
       // так как ноды используют index, как id, то удалять ноду из списка нельзя, только заменять 
-      state.myNodes = state.myNodes.map((node, index) => index === action.payload ? null : node);
+      state.myNodes = state.myNodes.map((node, index) => index === action.payload ? {} : node);
     },
     resetMyNodes: (state) => {
       state.myNodes = [];
