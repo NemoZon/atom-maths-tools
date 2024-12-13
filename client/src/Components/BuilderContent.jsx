@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Layout, Typography, Input, Button } from "antd";
+import { Layout, Typography, Input, Button, Spin } from "antd";
 import EditArea from "./EditArea";
 import LegendModal from "./LegendModal";
 import { BlockMath } from "react-katex";
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteMyNodeByIndex } from "../data/Node/slice";
 import { patchUserNodeByIndex } from "../data/Node/actions";
 import { Operation } from "../data/Operation/model";
+import useExpressionFromNode from "../hooks/useExpressionFromNode";
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
@@ -105,14 +106,22 @@ export default function BuilderContent() {
       navigate(-1);
     }
   }
-
-  const expression = useMemo(() => {
-    if (operations.length > 0 && node.params && node.operation) {
-      return replaceParams(operations, node);
+  function convertListToDict(data) {
+    if (!Array.isArray(data)) {
+        throw new TypeError("Input must be an array");
     }
-    return "";
-  }, [operations, node]);
 
+    const result = {};
+    data.forEach(item => {
+        if ('id' in item) {
+            result[item.id] = item;
+        }
+    });
+    return result;
+  }
+  
+  const {isLoading, expression} = useExpressionFromNode(convertListToDict(myNodes), node.id)
+  
   return (
     <Layout style={{ display: "flex", flexDirection: "column" }}>
       <Header style={{ backgroundColor: "#fff", padding: "10px 20px" }}>
@@ -141,6 +150,7 @@ export default function BuilderContent() {
               marginBottom: "20px",
             }}
           >
+            {isLoading && <Spin />}
             {operations.length > 0 && node.params && node.operation ? (
               <BlockMath math={expression} />
             ) : (

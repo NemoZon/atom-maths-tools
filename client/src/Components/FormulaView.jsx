@@ -4,14 +4,22 @@ import { BlockMath } from 'react-katex';
 import { Card, Progress, Spin, Typography } from 'antd';
 import { useEffect, useState } from "react";
 import useExpressionFromNode from "../hooks/useExpressionFromNode";
+import { useDispatch, useSelector } from "react-redux";
+import { getNodes } from "../data/Node/actions";
 
 const { Title, Text } = Typography;
 
 export default function FormulaView({ formula, matchPercent, matchPercentLoading = false }) {  
+  const { nodes } = useSelector(state => state.node)
 
   const [latex, setLatex] = useState(formula.latexExpression)
-  const {isLoading, expression} = useExpressionFromNode(formula.operationNode)
-
+  const {isLoading, expression} = useExpressionFromNode(nodes, formula.operationNode)
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (Object.keys(nodes).length === 0) {
+      getNodes(dispatch)
+    }
+  }, [dispatch, nodes])
 
   useEffect(() => {
     setLatex(expression);
