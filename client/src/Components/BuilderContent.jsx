@@ -121,6 +121,8 @@ export default function BuilderContent() {
   }
   
   const {isLoading, expression} = useExpressionFromNode(convertListToDict(myNodes), node.id)
+  const {expression: mainExpression, isLoading: isMainExpressionLoading} = useExpressionFromNode(convertListToDict(myNodes), 0)
+
   
   return (
     <Layout style={{ display: "flex", flexDirection: "column" }}>
@@ -136,6 +138,29 @@ export default function BuilderContent() {
       <Content
         style={{ padding: "20px", overflow: "auto", backgroundColor: "#fff" }}
       >
+        {nodeId !== "0" && (
+          <div>
+            <Title level={4}>
+              Основная формула
+            </Title>
+            <div
+              style={{
+                border: "1px solid #d9d9d9",
+                borderRadius: "4px",
+                padding: "10px",
+                marginBottom: "20px",
+              }}
+            >
+              {isMainExpressionLoading && <Spin />}
+              {mainExpression ? (
+                <BlockMath math={mainExpression} />
+              ) : (
+                <Text type="secondary">*формула в формате текста*</Text>
+              )}
+            </div>
+          </div>
+        )}
+
         <div>
           <Title level={4}>
             {location.state
