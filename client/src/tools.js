@@ -30,7 +30,7 @@ export function isValidObjectId(id) {
 
 export function convertListToDict(data) {
   if (!Array.isArray(data)) {
-      throw new TypeError("Input must be an array");
+      return {};
   }
 
   const result = {};
@@ -41,3 +41,23 @@ export function convertListToDict(data) {
   });
   return result;
 }
+
+export function getExpressionFromNode(nodes, nodeId, operations) {
+  function resolveExpression(nodeId) {
+    if (typeof nodeId === 'string' && !isValidObjectId(nodeId)) return nodeId;
+
+    const node = nodes[nodeId];
+    if (!node || !node.params || !node.operation) return '';
+
+    // Рекурсивно обрабатываем параметры
+    const resolvedParams = node.params.map(param => {
+      return nodes[param] ? resolveExpression(param) : param;
+    });
+
+    const resolvedNode = { ...node, params: resolvedParams };
+    return replaceParams(operations, resolvedNode);
+  }
+  const result = resolveExpression(nodeId)
+  
+  return result;
+} 

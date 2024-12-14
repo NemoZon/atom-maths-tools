@@ -8,6 +8,7 @@ const initialState = {
   // в этой структуре id каждой нодой - ее index
   // * так как каждая нода имеет параметры, и может принимать как id другой ноды, так и любой инпут, важно проверить тип параметра id = Number
   myNodes: [{ id: 0 }],
+  comparedNodes: null,
 }
 
 export const nodeSlice = createSlice({
@@ -22,6 +23,9 @@ export const nodeSlice = createSlice({
 			}
       
       state.nodes = payload;
+    },
+    setComparedNodes: (state, action) => {
+      state.comparedNodes = action.payload;
     },
     addMyNode: (state, action) => {
       state.myNodes = [...state.myNodes, action.payload];
@@ -66,6 +70,6 @@ export const nodeSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setNodes, addNode, setLoading, setError, addMyNode, deleteMyNodeByIndex, resetMyNodes, patchMyNodeByIndex } = nodeSlice.actions
+export const { setNodes, addNode, setLoading, setError, addMyNode, deleteMyNodeByIndex, resetMyNodes, patchMyNodeByIndex, setComparedNodes } = nodeSlice.actions
 
 export default nodeSlice.reducer

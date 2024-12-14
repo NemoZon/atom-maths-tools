@@ -56,7 +56,7 @@ export default function BuilderContent() {
       const myNodeOperation = operations.find(
         (op) => myNodes[id].operation === op.id
       );
-      if (myNodeOperation) {
+      if (myNodeOperation && node.params) {
         setOperation(new Operation(myNodeOperation));
         setParams(
           node.params.map((param) =>
@@ -154,6 +154,7 @@ export default function BuilderContent() {
               style={{
                 border: "1px solid #d9d9d9",
                 borderRadius: "4px",
+                fontSize: 18,
                 padding: "10px",
                 marginBottom: "20px",
               }}
@@ -236,14 +237,20 @@ export default function BuilderContent() {
             />
           </div>
         </div>
-        <Button
-          style={{ color: "blue", marginTop: "8px" }}
-          onClick={() => {
-            analyzeFormula(dispatch, {nodes: myNodes, formula: {operationNode: myNodes[0].id}});
-          }}
-        >
-          Найти совпадения
-        </Button>
+        {
+          (myNodes.length > 1 || operation) && (
+            <Button
+              style={{ color: "blue", marginTop: "8px" }}
+              onClick={() => {
+                analyzeFormula(dispatch, {nodes: myNodes, formula: {operationNode: myNodes[0].id}});
+                navigate('/analyze')
+              }}
+            >
+              Найти совпадения
+            </Button>
+          )
+        }
+
         {Boolean(expression.length) && (
           <Button
             style={{ color: "green", margin: "8px 0 0 5px" }}

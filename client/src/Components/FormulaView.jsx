@@ -9,7 +9,7 @@ import { getNodes } from "../data/Node/actions";
 
 const { Title, Text } = Typography;
 
-export default function FormulaView({ formula, matchPercent, matchPercentLoading = false }) {  
+export default function FormulaView({ formula, matchPercent, onClick, matchPercentLoading = false }) {  
   const { nodes } = useSelector(state => state.node)
 
   const [latex, setLatex] = useState(formula.latexExpression)
@@ -30,9 +30,9 @@ export default function FormulaView({ formula, matchPercent, matchPercentLoading
   }, [formula.latexExpression])
 
   return (
-    <Card style={{ 
+    <Card onClick={onClick} hoverable={Boolean(onClick)} style={{
+        cursor: onClick ? 'pointer' : 'auto',
         width: 400,
-        margin: 20, 
         border: "1px solid #111111",
       }}>
       <Title level={4}>Формула</Title>
@@ -49,7 +49,7 @@ export default function FormulaView({ formula, matchPercent, matchPercentLoading
         <div>
           {!matchPercentLoading ? (
             matchPercent ?
-              <Progress percent={matchPercent} /> :
+              <Progress percent={matchPercent.toFixed(2)} /> :
               <Text>Данных нет</Text>
           ) : (
             <Spin size="large" />
@@ -71,4 +71,5 @@ FormulaView.propTypes = {
     formula: PropTypes.instanceOf(Formula).isRequired,
     matchPercent: PropTypes.number,
     matchPercentLoading: PropTypes.bool,
+    onClick: PropTypes.func,
 }
