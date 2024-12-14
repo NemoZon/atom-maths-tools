@@ -1,5 +1,6 @@
 const express = require("express");
-const { createNode, getNodes } = require("../services/node.service");
+const { createNode, getNodes, createNodes } = require("../services/node.service");
+const { createFormula } = require("../services/formula.service");
 const NodeRouter = express.Router();
 
 NodeRouter.get("/", async (req, res) => {
@@ -24,6 +25,20 @@ NodeRouter.post("/", async (req, res) => {
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
+});
+
+NodeRouter.post("/formula", async (req, res) => {
+  try {
+    // [{id: 1, params: [Number || String], operation: String}]
+    const { nodes, legend = "", author = "", latexExpression = "" } = req.body
+    const {createdIds, rootNodeId} = await createNodes(nodes)
+    const formula = await createFormula({nodeId: rootNodeId, author, legend, latexExpression})
+
+
+    res.status(200).json({ formula, createdNodes: createdIds });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = NodeRouter;

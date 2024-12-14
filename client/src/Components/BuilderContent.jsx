@@ -6,11 +6,12 @@ import { BlockMath } from "react-katex";
 import { useEffect } from "react";
 import { replaceParams } from "../tools";
 import { useLocation, useNavigate, useParams } from "react-router";
-import { analyzeFormula } from "../data/Formula/actions";
+import { analyzeFormula, getFormulas } from "../data/Formula/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUserNodeByIndex, patchUserNodeByIndex } from "../data/Node/actions";
 import { Operation } from "../data/Operation/model";
 import useExpressionFromNode from "../hooks/useExpressionFromNode";
+import { createNodesFormula } from "../data/Node/http";
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
@@ -121,7 +122,22 @@ export default function BuilderContent() {
   
   const {isLoading, expression} = useExpressionFromNode(convertListToDict(myNodes), node.id)
   const {expression: mainExpression, isLoading: isMainExpressionLoading} = useExpressionFromNode(convertListToDict(myNodes), 0)
+  const [author, setAuthor] = useState('')
+  const [legend, setLegend] = useState('')
+  const [isCreatingLoading, setIsCreatingLoading] = useState(false)
 
+  async function handleFormulaSave() {
+    setIsCreatingLoading(true);
+    const validNodes = myNodes.filter(node => typeof node.id !== 'undefined' && node.params && node.operation)
+
+    if (validNodes.length > 0) {
+      await createNodesFormula(validNodes, author, legend, mainExpression)
+    }
+    await getFormulas(dispatch);
+
+    setIsCreatingLoading(false);
+    setIsLegendModalVisible(false);
+  }
   
   return (
     <Layout style={{ display: "flex", flexDirection: "column" }}>
@@ -129,10 +145,15 @@ export default function BuilderContent() {
         <Title level={3}>Конструктор формул</Title>
       </Header>
       <LegendModal
+        isLoading={isCreatingLoading}
         visible={isLegendModalVisible}
         onClose={() => setIsLegendModalVisible(false)}
-        onSave={() => {}}
-        legendResult={<BlockMath math={expression} />}
+        onSave={handleFormulaSave}
+        legendResult={<BlockMath math={mainExpression} />}
+        author={author}
+        legend={legend}
+        onLegendChange={(e) => setLegend(e.target.value)}
+        onAuthorChange={(e) => setAuthor(e.target.value)}
       />
       <Content
         style={{ padding: "20px", overflow: "auto", backgroundColor: "#fff" }}

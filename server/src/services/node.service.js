@@ -37,6 +37,51 @@ class NodeService {
 
         return await Node.create({ formula: formulaId, params, operation: operationId })
     }
+    static async createNodes(nodes) {
+      const createdNodes = new Map();
+      const pendingNodes = new Map(nodes.map((node) => [node.id, node]));
+    
+      while (pendingNodes.size > 0) {
+        let createdInThisIteration = false;
+    
+        for (const [id, node] of pendingNodes) {
+          const areParamsReady = node.params.every(
+            (param) => typeof param !== "number" || createdNodes.has(param)
+          );
+    
+          if (areParamsReady) {
+            // Prepare params with resolved IDs
+            const resolvedParams = node.params.map((param) =>
+              typeof param === "number" ? createdNodes.get(param) : param
+            );
+
+            // Simulate node creation
+            const newNode = await Node.create({
+              operation: node.operation,
+              params: resolvedParams,
+            });
+    
+            createdNodes.set(node.id, newNode.id);
+            pendingNodes.delete(id);
+            createdInThisIteration = true;
+          }
+        }
+    
+        if (!createdInThisIteration) {
+          throw new Error("Circular dependency detected or missing dependencies.");
+        }
+      }
+    
+      // Identify root node (without dependencies in params)
+      const rootNode = nodes.find(
+        (node) => !nodes.some((otherNode) => otherNode.params.includes(node.id))
+      );
+    
+      return {
+        createdIds: Array.from(createdNodes.values()),
+        rootNodeId: rootNode ? createdNodes.get(rootNode.id) : [...createdNodes.values()].at(-1),
+      };
+    }
 }
 
 module.exports = NodeService;

@@ -1,6 +1,5 @@
 const express = require("express");
-const { getFormulas, createFormula, analyzeFormula } = require("../services/formula.service");
-const AnalyzeService = require("../services/analyze.service");
+const { getFormulas, createFormula } = require("../services/formula.service");
 const FormulaService = require("../services/formula.service");
 const FormulaRouter = express.Router();
 

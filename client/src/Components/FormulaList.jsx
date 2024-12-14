@@ -4,6 +4,9 @@ import { List } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formula } from '../data/Formula/model'
 import { getFormulas } from '../data/Formula/actions'
+import { Typography } from 'antd';
+
+const { Text } = Typography;
 
 export default function FormulaList() {
     const dispatch = useDispatch();
@@ -15,7 +18,10 @@ export default function FormulaList() {
     return (
         <List
 					style={{ backgroundColor: 'white', width: 450 }}
-					header={<h2>Список формул</h2>}
+					header={<div>
+            <h2>Список формул</h2>
+            <Text type="secondary">Найдено: {formulas.length}</Text>
+          </div>}
 					bordered
 					dataSource={formulas}
 					renderItem={(formula) => (

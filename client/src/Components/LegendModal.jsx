@@ -1,7 +1,7 @@
 import React from 'react';
-import { Modal, Input, Button } from 'antd';
+import { Modal, Input, Button, Spin } from 'antd';
 
-const LegendModal = ({ visible, onClose, onSave, legendResult }) => {
+const LegendModal = ({ isLoading, visible, onClose, onSave, legendResult, author, legend, onAuthorChange, onLegendChange }) => {
   return (
     <Modal
       open={visible}
@@ -17,14 +17,14 @@ const LegendModal = ({ visible, onClose, onSave, legendResult }) => {
       </div>
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 14, marginBottom: 4 }}>Добавить легенду</div>
-        <Input.TextArea rows={3} placeholder="Введите легенду..." />
+        <Input.TextArea rows={3} placeholder="Введите легенду..." value={legend} onChange={onLegendChange} />
       </div>
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 14, marginBottom: 4 }}>Добавить имя автора</div>
-        <Input.TextArea rows={2} placeholder="Введите имя автора..." />
+        <Input.TextArea rows={2} placeholder="Введите имя автора..." value={author} onChange={onAuthorChange} />
       </div>
-      <Button type="primary" onClick={onSave} style={{ backgroundColor: '#4CAF50', borderColor: '#4CAF50' }}>
-        сохранить
+      <Button disabled={isLoading} type="primary" onClick={onSave} style={{ backgroundColor: '#4CAF50', borderColor: '#4CAF50' }}>
+        {isLoading ? <Spin /> : 'сохранить'}
       </Button>
     </Modal>
   );

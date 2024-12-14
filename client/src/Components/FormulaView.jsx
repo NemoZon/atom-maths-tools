@@ -60,7 +60,7 @@ export default function FormulaView({ formula, matchPercent, matchPercentLoading
       {formula.legend && (
         <>
           <Title level={5}>Легенда</Title>
-          <Text>{formula.legend}</Text>
+          <Text style={{ whiteSpace: 'pre-line' }}>{formula.legend}</Text>
         </>
       )}
     </Card>
