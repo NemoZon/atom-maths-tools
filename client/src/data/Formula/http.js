@@ -45,9 +45,9 @@ async function analyze({nodes, formula}) {
     try {
         const response = await axiosInstance.post(`${endpoint}/analyze/`, { nodes, formula })
         if (response.status === 200) {
-            return response.data; 
+            return response.data;
         } else {
-            return { /** вернуть ошибку */ }
+            return { error: response.data.error }
         }
     } catch (error) {
         console.error(error);

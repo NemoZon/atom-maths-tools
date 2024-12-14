@@ -5,6 +5,7 @@ const initialState = {
   error: null,
   formulas: [],
   myFormula: {},
+  match: [],
 }
 
 export const formulaSlice = createSlice({
@@ -13,6 +14,9 @@ export const formulaSlice = createSlice({
   reducers: {
     setFormulas: (state, action) => {
       state.formulas = action.payload;
+    },
+    setMatch: (state, action) => {
+      state.match = action.payload;
     },
     setMyFormula: (state, action) => {
       state.myFormula = action.payload;
@@ -30,6 +34,6 @@ export const formulaSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setFormulas, addFormula, setLoading, setError, setMyFormula } = formulaSlice.actions
+export const { setFormulas, addFormula, setLoading, setError, setMyFormula, setMatch } = formulaSlice.actions
 
 export default formulaSlice.reducer
