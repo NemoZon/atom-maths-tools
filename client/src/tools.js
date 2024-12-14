@@ -23,3 +23,21 @@ export function replaceParams(operations, node) {
     return `\\$\{${param}\\}`;
   });
 };
+
+export function isValidObjectId(id) {
+  return /^[a-fA-F0-9]{24}$/.test(id);
+}
+
+export function convertListToDict(data) {
+  if (!Array.isArray(data)) {
+      throw new TypeError("Input must be an array");
+  }
+
+  const result = {};
+  data.forEach(item => {
+      if ('id' in item) {
+          result[item.id] = item;
+      }
+  });
+  return result;
+}

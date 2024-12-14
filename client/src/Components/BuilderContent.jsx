@@ -4,7 +4,7 @@ import EditArea from "./EditArea";
 import LegendModal from "./LegendModal";
 import { BlockMath } from "react-katex";
 import { useEffect } from "react";
-import { replaceParams } from "../tools";
+import { convertListToDict, replaceParams } from "../tools";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { analyzeFormula, getFormulas } from "../data/Formula/actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -105,19 +105,6 @@ export default function BuilderContent() {
     } else {
       navigate(-1);
     }
-  }
-  function convertListToDict(data) {
-    if (!Array.isArray(data)) {
-        throw new TypeError("Input must be an array");
-    }
-
-    const result = {};
-    data.forEach(item => {
-        if ('id' in item) {
-            result[item.id] = item;
-        }
-    });
-    return result;
   }
   
   const {isLoading, expression} = useExpressionFromNode(convertListToDict(myNodes), node.id)

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOperations } from "../data/Operation/actions";
-import { replaceParams } from "../tools";
+import { isValidObjectId, replaceParams } from "../tools";
 
 export default function useExpressionFromNode(nodes, nodeId) {
   const [isLoading, setIsLoading] = useState(false)
@@ -19,6 +19,8 @@ export default function useExpressionFromNode(nodes, nodeId) {
 
   // рекурсивная функция для получения latexExpression из нод
   const getExpressionFromNode = useCallback((nodeId) => {
+    if (typeof nodeId === 'string' && !isValidObjectId(nodeId)) return nodeId;
+
     const node = nodes[nodeId];
     
     if (!node || !node.params || !node.operation) return '';
