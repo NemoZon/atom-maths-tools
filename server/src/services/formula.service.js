@@ -54,7 +54,7 @@ class FormulaService {
 
     static async __getFormulaNodesOrder(formula) {
       const firstNode = formula.operationNode;
-      const result = new Map([[firstNode.id.toString(), firstNode]]);
+      const result = new Map([[firstNode._id.toString(), firstNode]]);
       const nodesToParse = [firstNode];
     
       while (nodesToParse.length > 0) {
@@ -62,10 +62,10 @@ class FormulaService {
     
         const objectIds = currentNode.params.filter(p => mongoose.Types.ObjectId.isValid(p));
         if (objectIds.length > 0) {
-          const foundNodes = await Node.find({ _id: { $in: objectIds } });
+          const foundNodes = await Node.find({ _id: { $in: objectIds } }).lean();
           for (const node of foundNodes) {
-            if (!result.has(node.id.toString())) {
-              result.set(node.id.toString(), node);
+            if (!result.has(node._id.toString())) {
+              result.set(node._id.toString(), node);
               nodesToParse.push(node);
             }
           }
