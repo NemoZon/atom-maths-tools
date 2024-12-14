@@ -169,12 +169,12 @@ class AnalyzeService {
         const flatNode = {
           ...node,
           params: params.map((param) =>
-            typeof param === "object" && (param.id || param._id)? (param.id || param._id) : param
+            typeof param === "object" && (param.id || param._id || param._doc?._id)? (param.id || param._id || param._doc?._id) : param
           ),
         };
         result.push(flatNode);
         params.forEach((param) => {
-          if (typeof param === "object" && (param.id || param._id)) {
+          if (typeof param === "object" && (param.id || param._id || param._doc?._id)) {
             processNode(param);
           }
         });
