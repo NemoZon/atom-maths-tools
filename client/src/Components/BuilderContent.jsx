@@ -8,7 +8,7 @@ import { convertListToDict, replaceParams } from "../tools";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { analyzeFormula, getFormulas } from "../data/Formula/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUserNodeByIndex, patchUserNodeByIndex } from "../data/Node/actions";
+import { deleteUserNodeByIndex, patchUserNodeByIndex, resetUserNodes } from "../data/Node/actions";
 import { Operation } from "../data/Operation/model";
 import useExpressionFromNode from "../hooks/useExpressionFromNode";
 import { createNodesFormula } from "../data/Node/http";
@@ -95,7 +95,9 @@ export default function BuilderContent() {
     if (nodeId !== "0") {
       navigate(-1);
     } else {
-      navigate(0);
+      setOperation()
+      setNode({})
+      resetUserNodes(dispatch)
     }
   }
 
