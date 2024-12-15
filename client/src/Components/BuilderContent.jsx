@@ -106,7 +106,25 @@ export default function BuilderContent() {
       navigate(-1);
     }
   }
+
+  async function handleCopyAsBlock() {
+    try {
+      await navigator.clipboard.writeText(`$$${expression}$$`);
+      alert("Текст скопирован!");
+    } catch (err) {
+      console.error("Ошибка копирования:", err);
+    }
+  }
   
+  async function handleCopyAsInline() {
+    try {
+      await navigator.clipboard.writeText(`$${expression}$`);
+      alert("Текст скопирован!");
+    } catch (err) {
+      console.error("Ошибка копирования:", err);
+    }
+  }
+
   const {isLoading, expression} = useExpressionFromNode(convertListToDict(myNodes), node.id)
   const {expression: mainExpression, isLoading: isMainExpressionLoading} = useExpressionFromNode(convertListToDict(myNodes), 0)
   const [author, setAuthor] = useState('')
@@ -229,6 +247,12 @@ export default function BuilderContent() {
           </Button>
 
           <div style={{ marginTop: "20px" }}>
+            {expression && (
+              <div style={{ display: 'flex', gap: 10, marginBottom: "2px" }}>
+                <Button onClick={handleCopyAsBlock} type="text">Копировать как блок</Button>
+                <Button onClick={handleCopyAsInline} type="text">Копировать как строку</Button>
+              </div>
+            )}
             <Input.TextArea
               placeholder="Тут будет отображаться latex синтаксис данной формулы"
               value={expression}
