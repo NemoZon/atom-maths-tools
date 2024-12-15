@@ -1,5 +1,5 @@
 import { create, get } from "./http";
-import { addMyNode, addNode, deleteMyNodeByIndex, patchMyNodeByIndex, resetMyNodes, setError, setLoading, setNodes } from "./slice";
+import { addMyNode, addNode, deleteMyNodeByIndex, patchMyNodeByIndex, resetMyNodes, setError, setLoading, setMyNodes, setNodes } from "./slice";
 import { Node } from "./model";
 
 async function getNodes(dispatch, ...args) {
@@ -56,6 +56,10 @@ function resetUserNodes(dispatch) {
     dispatch(resetMyNodes())
 }
 
+function setUserNodes(dispatch, nodes) {
+    dispatch(setMyNodes(nodes))
+}
+
 function patchUserNodeByIndex(dispatch, index, userNode) {
     const node = new Node(userNode)
     const payload = {
@@ -73,4 +77,4 @@ function patchUserNodeByIndex(dispatch, index, userNode) {
 }
 
 
-export { getNodes, createNode, addUserNode, deleteUserNodeByIndex, resetUserNodes, patchUserNodeByIndex }
+export { getNodes, createNode, addUserNode, deleteUserNodeByIndex, resetUserNodes, patchUserNodeByIndex, setUserNodes }

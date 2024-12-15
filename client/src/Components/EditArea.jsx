@@ -8,6 +8,7 @@ import { Input, Button } from "antd";
 import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserNode, patchUserNodeByIndex } from "../data/Node/actions";
+import { isValidObjectId } from "../tools";
 
 export default function EditArea({
   nodeId,

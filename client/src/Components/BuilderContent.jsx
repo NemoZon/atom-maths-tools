@@ -125,6 +125,15 @@ export default function BuilderContent() {
     }
   }
 
+  async function handleCopyAsJSON() {
+    try {
+      await navigator.clipboard.writeText(JSON.stringify({ expression: expression}));
+      alert("Текст скопирован!");
+    } catch (err) {
+      console.error("Ошибка копирования:", err);
+    }
+  }
+
   const {isLoading, expression} = useExpressionFromNode(convertListToDict(myNodes), node.id)
   const {expression: mainExpression, isLoading: isMainExpressionLoading} = useExpressionFromNode(convertListToDict(myNodes), 0)
   const [author, setAuthor] = useState('')
@@ -251,6 +260,7 @@ export default function BuilderContent() {
               <div style={{ display: 'flex', gap: 10, marginBottom: "2px" }}>
                 <Button onClick={handleCopyAsBlock} type="text">Копировать как блок</Button>
                 <Button onClick={handleCopyAsInline} type="text">Копировать как строку</Button>
+                <Button onClick={handleCopyAsJSON} type="text">Копировать как JSON</Button>
               </div>
             )}
             <Input.TextArea

@@ -60,4 +60,27 @@ export function getExpressionFromNode(nodes, nodeId, operations) {
   const result = resolveExpression(nodeId)
   
   return result;
-} 
+}
+
+export function getNodesFromFormula(nodes, formula) {
+  const firstNode = nodes[formula.operationNode]
+  const result = [{...firstNode, id: 0}]
+  const nodesToParse = [firstNode]
+  while (nodesToParse.length > 0) {
+    const nextNodes = nodesToParse.shift();
+    const params = nextNodes.params
+    for (let i = 0; i < params.length; i++) {
+      const param = params[i]
+      if (typeof param === 'number' || isValidObjectId(param)) {
+        const nodeToPush = nodes[param]
+        nodesToParse.push(nodeToPush)
+        const n = result.find(n => n.params.some(p => p === param))
+        console.log('n', n);
+        
+        n.params = n.params.map(p => p === param ? result.length : p)
+        result.push({...nodeToPush, id: result.length})
+      }
+    }
+  }  
+  return result;
+}

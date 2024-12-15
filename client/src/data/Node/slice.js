@@ -55,7 +55,10 @@ export const nodeSlice = createSlice({
       state.myNodes = state.myNodes.map((node, index) => index === action.payload ? {} : node);
     },
     resetMyNodes: (state) => {
-      state.myNodes = [];
+      state.myNodes = [{ id: 0 }];
+    },
+    setMyNodes: (state, action) => {
+      state.myNodes = action.payload;
     },
 		addNode: (state, action) => {
       state.nodes = {...state.nodes, [action.payload._id]: action.payload};
@@ -70,6 +73,6 @@ export const nodeSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setNodes, addNode, setLoading, setError, addMyNode, deleteMyNodeByIndex, resetMyNodes, patchMyNodeByIndex, setComparedNodes } = nodeSlice.actions
+export const { setMyNodes, setNodes, addNode, setLoading, setError, addMyNode, deleteMyNodeByIndex, resetMyNodes, patchMyNodeByIndex, setComparedNodes } = nodeSlice.actions
 
 export default nodeSlice.reducer
