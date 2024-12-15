@@ -130,6 +130,34 @@ async function addDefaultNodes(operations) {
           params: ["a", "b"],
           operation: operationIds[Math.floor(Math.random() * operationIds.length)],
         },
+        {
+          params: ["E", "y"],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
+        {
+          params: ["S", "v"],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
+        {
+          params: ["t", "m"],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
+        {
+          params: ["r", "2"],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
+        {
+          params: ["N", "x"],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
+        {
+          params: ["PI", "R"],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
+        {
+          params: ["a", "b"],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
     ];
     
     try {
@@ -155,6 +183,26 @@ async function addDefaultNodes(operations) {
         },
         {
           params: [nodeLeaves[8]._id, nodeLeaves[9]._id],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
+        {
+          params: [nodeLeaves[10]._id, nodeLeaves[11]._id],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
+        {
+          params: [nodeLeaves[12]._id, "S"],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
+        {
+          params: [nodeLeaves[13]._id, "M"],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
+        {
+          params: [nodeLeaves[14]._id, nodeLeaves[15]._id],
+          operation: operationIds[Math.floor(Math.random() * operationIds.length)],
+        },
+        {
+          params: [nodeLeaves[16]._id, "1"],
           operation: operationIds[Math.floor(Math.random() * operationIds.length)],
         },
       ];
@@ -205,6 +253,42 @@ async function addDefaultFormulas(nodes) {
         legend: 'где x - координата, v - скорость, t - время',
         latexExpression: 'x = v \\cdot t',
         operationNode: nodesIds[3],
+      },
+      {
+        author: 'Альберт Эйнштейн',
+        legend: 'где E - энергия, m - масса, c - скорость света',
+        latexExpression: 'E = mc^2',
+        operationNode: nodesIds[4],
+      },
+      {
+        author: 'Пифагор',
+        legend: 'где a, b - катеты, c - гипотенуза',
+        latexExpression: 'a^2 + b^2 = c^2',
+        operationNode: nodesIds[5],
+      },
+      {
+        author: 'Джеймс Клерк Максвелл',
+        legend: 'где c - скорость света, λ - длина волны, ν - частота',
+        latexExpression: 'c = \lambda \cdot \nu',
+        operationNode: nodesIds[6],
+      },
+      {
+        author: 'Исаак Ньютон',
+        legend: 'второй закон движения',
+        latexExpression: '\\frac{dp}{dt} = F',
+        operationNode: nodesIds[7],
+      },
+      {
+        author: 'Леонард Эйлер',
+        legend: 'формула Эйлера для комплексных чисел',
+        latexExpression: 'e^{i\\pi} + 1 = 0',
+        operationNode: nodesIds[8],
+      },
+      {
+        author: 'Даниил Бернулли',
+        legend: 'уравнение Бернулли',
+        latexExpression: 'P + \\frac{1}{2} \rho v^2 + \rho gh = const',
+        operationNode: nodesIds[9],
       },
     ];
     
